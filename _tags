@@ -1,0 +1,3 @@
+<src>: include
+
+<tests/testibtws.{ml,byte,native}>: pkg_unix, pkg_threads, pkg_str

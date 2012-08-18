@@ -87,6 +87,8 @@ type msg = ErrMsg of version * id * int * string
 	   | OpenOrderEnd of version
 	   | ExecutionDataEnd of version * id
 
+	   | ManagedAccts of version * string
+
 ;;
 
 (* EClientSocketBase::processMsg *)
@@ -585,6 +587,11 @@ let processMsg (ic: in_channel) : msg =
 	let version = decode_int ic in
 	let reqId = decode_int ic in
 	ExecutionDataEnd (version, reqId)
+      )
+      | 15 (* MANAGED_ACCTS *) -> (
+	let version = decode_int ic in
+	let accountslist = decode_string ic in
+	ManagedAccts (version, accountslist)
       )
       | id -> (
 	printf "%s\n" (String.concat " " ["not yet supported:";(string_of_int id)]);
